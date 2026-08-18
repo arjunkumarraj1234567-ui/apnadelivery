@@ -1,1 +1,1069 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ApnaDelivery</title>
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
+header{background:#16a34a;color:#fff;padding:20px}
+header h1{margin:0}
+.search{width:100%;padding:13px;border:0;border-radius:10px;margin-top:12px}
+.container{max-width:700px;margin:auto;padding:18px}
+.card,.shop,.box{background:#fff;padding:18px;margin-top:15px;border-radius:15px}
+.categories{display:flex;gap:10px;overflow:auto}
+.category{background:#fff;padding:12px 18px;border-radius:20px;white-space:nowrap}
+.product{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid #eee}
+.price{color:#16a34a;font-weight:bold;margin-top:5px}
+button{background:#16a34a;color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
+button.secondary{background:#2563eb}
+button.danger{background:#dc2626}
+button.gray{background:#4b5563}
+.full{width:100%;margin-top:10px;padding:13px}
+.input{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px}
+.hidden{display:none!important}
+.cart-bar{display:none;position:fixed;bottom:15px;left:15px;right:15px;background:#111827;color:#fff;padding:15px;border-radius:12px;justify-content:space-between;align-items:center}
+.cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
+.qty button{padding:5px 10px}
+.total{font-size:18px;font-weight:bold;margin-top:15px}
+.success{text-align:center}
+.nav{display:flex;gap:8px;overflow:auto;background:#fff;padding:10px}
+.nav button{white-space:nowrap}
+.status{font-weight:bold}
+.order{border-top:1px solid #ddd;padding:15px 0}
+.message{margin-top:10px;font-weight:bold}
+.small{font-size:13px;color:#666}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>ApnaDelivery 🛵</h1>
+<p>Food & Grocery delivered to your door</p>
+<input id="search" class="search" placeholder="Search food, grocery or shop...">
+</header>
+
+<div class="nav">
+<button onclick="showPage('home')">🏠 Home</button>
+<button onclick="showPage('orders')">📦 My Orders</button>
+<button onclick="showPage('delivery')">🚚 Delivery</button>
+<button onclick="showPage('admin')">⚙️ Admin</button>
+</div>
+
+<div class="container">
+
+<!-- USER BAR -->
+<div class="card">
+<b id="userStatus">Not logged in</b>
+<div id="userActions">
+<button class="secondary" onclick="showLogin()">Login / Signup</button>
+</div>
+</div>
+
+<!-- LOGIN -->
+<div id="loginBox" class="box hidden">
+<h2>🔐 Login / Signup</h2>
+
+<input id="email" class="input" type="email" placeholder="Email">
+
+<input id="password" class="input" type="password" placeholder="Password">
+
+<button class="full" onclick="loginUser()">Login</button>
+<button class="full secondary" onclick="signupUser()">Create Account</button>
+
+<div id="authMessage" class="message"></div>
+</div>
+
+<!-- HOME -->
+<div id="homePage">
+
+<h2>Categories</h2>
+
+<div class="categories">
+<div class="category">🍔 Food</div>
+<div class="category">🛒 Grocery</div>
+<div class="category">🥤 Drinks</div>
+<div class="category">🍰 Sweets</div>
+</div>
+
+<h2>Nearby Shops</h2>
+
+<div class="shop">
+
+<h2>🍗 Royal Biryani</h2>
+<p>Indian • Biryani • 25 min</p>
+
+<div class="product">
+<div>
+<b>Chicken Biryani</b>
+<div class="price">₹220</div>
+</div>
+<button onclick="addProduct('Chicken Biryani',220)">Add</button>
+</div>
+
+<div class="product">
+<div>
+<b>Veg Biryani</b>
+<div class="price">₹160</div>
+</div>
+<button onclick="addProduct('Veg Biryani',160)">Add</button>
+</div>
+
+</div>
+
+<div class="shop">
+
+<h2>🛒 Apna General Store</h2>
+<p>Grocery • 20 min</p>
+
+<div class="product">
+<div>
+<b>Milk 1L</b>
+<div class="price">₹60</div>
+</div>
+<button onclick="addProduct('Milk 1L',60)">Add</button>
+</div>
+
+<div class="product">
+<div>
+<b>Bread</b>
+<div class="price">₹40</div>
+</div>
+<button onclick="addProduct('Bread',40)">Add</button>
+</div>
+
+</div>
+
+<!-- CART -->
+<div id="cartBox" class="box hidden">
+
+<h2>🛒 Your Cart</h2>
+
+<div id="cartItems"></div>
+
+<div class="total">
+Subtotal: ₹<span id="subtotal">0</span>
+</div>
+
+<p>Delivery Charge: ₹30</p>
+
+<div class="total">
+Total: ₹<span id="total">30</span>
+</div>
+
+<button class="full" onclick="openAddress()">Place Order</button>
+
+</div>
+
+<!-- ADDRESS -->
+<div id="addressBox" class="box hidden">
+
+<h2>📍 Delivery Details</h2>
+
+<input id="name" class="input" placeholder="Your Name">
+
+<input id="phone" class="input" placeholder="Mobile Number">
+
+<textarea id="address" class="input" rows="4" placeholder="Full Address"></textarea>
+
+<input id="landmark" class="input" placeholder="Landmark (optional)">
+
+<select id="payment" class="input">
+<option>Cash on Delivery</option>
+<option>UPI</option>
+</select>
+
+<button class="full" onclick="confirmOrder()">Confirm Order</button>
+
+</div>
+
+<!-- SUCCESS -->
+<div id="successBox" class="box hidden success">
+
+<h1>🎉</h1>
+<h2>Order Confirmed!</h2>
+
+<p>Order ID: <b id="orderId"></b></p>
+<p id="successText"></p>
+
+<button onclick="showPage('orders')">📦 My Orders</button>
+
+</div>
+
+</div>
+
+<!-- ORDERS -->
+<div id="ordersPage" class="hidden">
+
+<div class="card">
+<h2>📦 My Orders</h2>
+<div id="orderHistory">Login karke orders dekhein.</div>
+</div>
+
+</div>
+
+<!-- DELIVERY -->
+<div id="deliveryPage" class="hidden">
+
+<div class="card">
+
+<h2>🚚 Delivery Partner</h2>
+
+<div id="deliveryLoginMessage">
+Login karke available deliveries dekhein.
+</div>
+
+<button onclick="loadDeliveryOrders()">🔄 Refresh</button>
+
+<div id="deliveryOrders"></div>
+
+</div>
+
+</div>
+
+<!-- ADMIN -->
+<div id="adminPage" class="hidden">
+
+<div class="card">
+
+<h2>⚙️ Admin Dashboard</h2>
+
+<p class="small">
+Admin access Firebase account ke email se control hota hai.
+</p>
+
+<button onclick="loadAdminOrders()">🔄 Refresh Orders</button>
+
+<div id="adminOrders"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- CART BAR -->
+<div id="cartBar" class="cart-bar">
+
+<span>🛒 <b id="cartCount">0</b> items</span>
+
+<button onclick="showCart()">View Cart</button>
+
+</div>
+
+
+<script type="module">
+
+import {initializeApp}
+from "https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js";
+
+import {
+getAuth,
+createUserWithEmailAndPassword,
+signInWithEmailAndPassword,
+signOut,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.7.0/firebase-auth.js";
+
+import {
+getFirestore,
+collection,
+addDoc,
+getDocs,
+doc,
+updateDoc,
+query,
+where
+}
+from "https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js";
+
+
+/* ================= FIREBASE ================= */
+
+const firebaseConfig={
+apiKey:"AIzaSyDn5Pyl-x8PrfDB6Jt2KYjodFFNDuiLTZw",
+authDomain:"apnadelivery-cccab.firebaseapp.com",
+projectId:"apnadelivery-cccab",
+storageBucket:"apnadelivery-cccab.firebasestorage.app",
+messagingSenderId:"865797686484",
+appId:"1:865797686484:web:d66decd41d04332470e741",
+measurementId:"G-H75X6574QQ"
+};
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+
+
+/* ================= ROLES =================
+   Yahan apne actual Firebase user emails
+   baad mein set kar sakte ho.
+*/
+
+const ADMIN_EMAILS=[
+""
+];
+
+const DELIVERY_EMAILS=[
+""
+];
+
+
+/* ================= STATE ================= */
+
+let currentUser=null;
+let cart=[];
+
+
+/* ================= PAGE ================= */
+
+window.showPage=function(page){
+
+document.getElementById("homePage").classList.add("hidden");
+document.getElementById("ordersPage").classList.add("hidden");
+document.getElementById("deliveryPage").classList.add("hidden");
+document.getElementById("adminPage").classList.add("hidden");
+
+if(page==="home"){
+document.getElementById("homePage").classList.remove("hidden");
+}
+
+if(page==="orders"){
+document.getElementById("ordersPage").classList.remove("hidden");
+loadMyOrders();
+}
+
+if(page==="delivery"){
+document.getElementById("deliveryPage").classList.remove("hidden");
+loadDeliveryOrders();
+}
+
+if(page==="admin"){
+document.getElementById("adminPage").classList.remove("hidden");
+loadAdminOrders();
+}
+
+};
+
+
+/* ================= LOGIN ================= */
+
+window.showLogin=function(){
+
+document.getElementById("loginBox").classList.remove("hidden");
+
+};
+
+
+window.signupUser=async function(){
+
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
+const message=document.getElementById("authMessage");
+
+if(!email||!password){
+
+message.innerText="Email aur password bhariye.";
+return;
+
+}
+
+if(password.length<6){
+
+message.innerText="Password kam se kam 6 characters ka hona chahiye.";
+return;
+
+}
+
+try{
+
+await createUserWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+message.innerText="Account created successfully.";
+
+}catch(error){
+
+message.innerText=error.message;
+
+}
+
+};
+
+
+window.loginUser=async function(){
+
+const email=document.getElementById("email").value.trim();
+const password=document.getElementById("password").value;
+const message=document.getElementById("authMessage");
+
+if(!email||!password){
+
+message.innerText="Email aur password bhariye.";
+return;
+
+}
+
+try{
+
+await signInWithEmailAndPassword(
+auth,
+email,
+password
+);
+
+message.innerText="Login successful.";
+
+}catch(error){
+
+message.innerText="Login failed: "+error.message;
+
+}
+
+};
+
+
+window.logoutUser=async function(){
+
+await signOut(auth);
+
+};
+
+
+/* ================= AUTH STATE ================= */
+
+onAuthStateChanged(auth,function(user){
+
+currentUser=user;
+
+const status=document.getElementById("userStatus");
+const actions=document.getElementById("userActions");
+
+if(user){
+
+status.innerText="Logged in: "+user.email;
+
+actions.innerHTML=`
+<button class="danger" onclick="logoutUser()">Logout</button>
+`;
+
+document.getElementById("loginBox").classList.add("hidden");
+
+}else{
+
+status.innerText="Not logged in";
+
+actions.innerHTML=`
+<button class="secondary" onclick="showLogin()">Login / Signup</button>
+`;
+
+}
+
+});
+
+
+/* ================= CART ================= */
+
+window.addProduct=function(name,price){
+
+const item=cart.find(x=>x.name===name);
+
+if(item){
+
+item.quantity++;
+
+}else{
+
+cart.push({
+name:name,
+price:price,
+quantity:1
+});
+
+}
+
+updateCart();
+
+};
+
+
+function updateCart(){
+
+let count=0;
+
+cart.forEach(x=>count+=x.quantity);
+
+document.getElementById("cartCount").innerText=count;
+
+document.getElementById("cartBar").style.display=
+count>0?"flex":"none";
+
+};
+
+
+window.showCart=function(){
+
+document.getElementById("cartBox").classList.remove("hidden");
+
+renderCart();
+
+};
+
+
+function renderCart(){
+
+let html="";
+let subtotal=0;
+
+cart.forEach(function(item,index){
+
+subtotal+=item.price*item.quantity;
+
+html+=`
+<div class="cart-item">
+
+<div>
+<b>${item.name}</b><br>
+₹${item.price}
+</div>
+
+<div class="qty">
+
+<button onclick="decrease(${index})">−</button>
+
+${item.quantity}
+
+<button onclick="increase(${index})">+</button>
+
+</div>
+
+</div>
+`;
+
+});
+
+document.getElementById("cartItems").innerHTML=html;
+document.getElementById("subtotal").innerText=subtotal;
+document.getElementById("total").innerText=subtotal+30;
+
+};
+
+
+window.increase=function(index){
+
+cart[index].quantity++;
+
+renderCart();
+updateCart();
+
+};
+
+
+window.decrease=function(index){
+
+cart[index].quantity--;
+
+if(cart[index].quantity<=0){
+
+cart.splice(index,1);
+
+}
+
+renderCart();
+updateCart();
+
+};
+
+
+/* ================= ORDER ================= */
+
+window.openAddress=function(){
+
+if(!currentUser){
+
+alert("Order place karne ke liye pehle login karein.");
+showLogin();
+return;
+
+}
+
+if(cart.length===0){
+
+alert("Cart is empty.");
+return;
+
+}
+
+document.getElementById("addressBox").classList.remove("hidden");
+
+};
+
+
+window.confirmOrder=async function(){
+
+if(!currentUser){
+
+alert("Please login first.");
+return;
+
+}
+
+const name=document.getElementById("name").value.trim();
+const phone=document.getElementById("phone").value.trim();
+const address=document.getElementById("address").value.trim();
+const landmark=document.getElementById("landmark").value.trim();
+const payment=document.getElementById("payment").value;
+
+if(!name||!phone||!address){
+
+alert("Name, mobile aur address bhariye.");
+return;
+
+}
+
+let subtotal=0;
+
+cart.forEach(x=>{
+subtotal+=x.price*x.quantity;
+});
+
+const order={
+
+id:"AD"+Math.floor(100000+Math.random()*900000),
+
+userId:currentUser.uid,
+
+email:currentUser.email,
+
+name:name,
+
+phone:phone,
+
+address:address,
+
+landmark:landmark,
+
+payment:payment,
+
+items:cart.map(x=>({
+name:x.name,
+price:x.price,
+quantity:x.quantity
+})),
+
+total:subtotal+30,
+
+status:"Order Confirmed",
+
+date:new Date().toLocaleString()
+
+};
+
+try{
+
+await addDoc(
+collection(db,"orders"),
+order
+);
+
+document.getElementById("orderId").innerText=order.id;
+
+document.getElementById("successText").innerText=
+"Thank you "+name+"! Your order has been saved.";
+
+document.getElementById("cartBox").classList.add("hidden");
+document.getElementById("addressBox").classList.add("hidden");
+document.getElementById("successBox").classList.remove("hidden");
+
+cart=[];
+
+updateCart();
+
+}catch(error){
+
+alert("Order save nahi hua: "+error.message);
+
+}
+
+};
+
+
+/* ================= CUSTOMER ORDERS ================= */
+
+async function loadMyOrders(){
+
+const box=document.getElementById("orderHistory");
+
+if(!currentUser){
+
+box.innerText="Please login first.";
+return;
+
+}
+
+box.innerText="Loading...";
+
+try{
+
+const q=query(
+collection(db,"orders"),
+where("userId","==",currentUser.uid)
+);
+
+const snapshot=await getDocs(q);
+
+if(snapshot.empty){
+
+box.innerText="No orders yet.";
+return;
+
+}
+
+let html="";
+
+snapshot.forEach(function(item){
+
+const order=item.data();
+
+html+=`
+<div class="order">
+
+<b>Order ID:</b> ${order.id}
+
+<br>
+
+<b>Total:</b> ₹${order.total}
+
+<br>
+
+<b>Status:</b> ${order.status}
+
+<br>
+
+<b>Payment:</b> ${order.payment}
+
+<br>
+
+<b>Date:</b> ${order.date}
+
+</div>
+`;
+
+});
+
+box.innerHTML=html;
+
+}catch(error){
+
+box.innerText="Orders load nahi hue: "+error.message;
+
+}
+
+}
+
+
+/* ================= DELIVERY ================= */
+
+window.loadDeliveryOrders=async function(){
+
+const box=document.getElementById("deliveryOrders");
+
+if(!currentUser){
+
+box.innerHTML="<p>Please login first.</p>";
+return;
+
+}
+
+/*
+  Empty DELIVERY_EMAILS ka matlab
+  testing ke liye logged-in user ko
+  panel dikhana.
+*/
+
+if(
+DELIVERY_EMAILS.length>0 &&
+!DELIVERY_EMAILS.includes(currentUser.email)
+){
+
+box.innerHTML="<p>Delivery Partner access nahi hai.</p>";
+return;
+
+}
+
+box.innerHTML="<p>Loading...</p>";
+
+try{
+
+const snapshot=
+await getDocs(collection(db,"orders"));
+
+let html="";
+
+snapshot.forEach(function(item){
+
+const order=item.data();
+
+if(
+order.status==="Order Confirmed" ||
+order.status==="Out for Delivery"
+){
+
+html+=`
+
+<div class="order">
+
+<b>🆔 Order:</b> ${order.id}
+
+<br>
+
+<b>👤 Customer:</b> ${order.name}
+
+<br>
+
+<b>📞 Phone:</b> ${order.phone}
+
+<br>
+
+<b>📍 Address:</b> ${order.address}
+
+<br>
+
+<b>💰 Total:</b> ₹${order.total}
+
+<br>
+
+<b>Status:</b> ${order.status}
+
+<br>
+
+`;
+
+if(order.status==="Order Confirmed"){
+
+html+=`
+<button onclick="acceptDelivery('${item.id}')">
+✅ Accept Delivery
+</button>
+`;
+
+}
+
+if(order.status==="Out for Delivery"){
+
+html+=`
+<button onclick="markDelivered('${item.id}')">
+📦 Mark Delivered
+</button>
+`;
+
+}
+
+html+=`</div>`;
+
+}
+
+});
+
+box.innerHTML=
+html||"<p>No delivery available.</p>";
+
+}catch(error){
+
+box.innerText="Error: "+error.message;
+
+}
+
+};
+
+
+window.acceptDelivery=async function(id){
+
+try{
+
+await updateDoc(
+doc(db,"orders",id),
+{
+status:"Out for Delivery"
+}
+);
+
+alert("Delivery accepted.");
+
+loadDeliveryOrders();
+
+}catch(error){
+
+alert("Update failed: "+error.message);
+
+}
+
+};
+
+
+window.markDelivered=async function(id){
+
+try{
+
+await updateDoc(
+doc(db,"orders",id),
+{
+status:"Delivered"
+}
+);
+
+alert("Order marked as delivered.");
+
+loadDeliveryOrders();
+
+}catch(error){
+
+alert("Update failed: "+error.message);
+
+}
+
+};
+
+
+/* ================= ADMIN ================= */
+
+window.loadAdminOrders=async function(){
+
+const box=document.getElementById("adminOrders");
+
+if(!currentUser){
+
+box.innerHTML="<p>Please login first.</p>";
+return;
+
+}
+
+/*
+  IMPORTANT:
+  Production mein ADMIN_EMAILS
+  mein actual admin email set karna.
+*/
+
+if(
+ADMIN_EMAILS.length>0 &&
+!ADMIN_EMAILS.includes(currentUser.email)
+){
+
+box.innerHTML="<p>Admin access denied.</p>";
+return;
+
+}
+
+box.innerHTML="<p>Loading orders...</p>";
+
+try{
+
+const snapshot=
+await getDocs(collection(db,"orders"));
+
+if(snapshot.empty){
+
+box.innerHTML="<p>No orders yet.</p>";
+return;
+
+}
+
+let html="";
+
+snapshot.forEach(function(item){
+
+const order=item.data();
+
+html+=`
+
+<div class="order">
+
+<b>🆔 Order ID:</b> ${order.id}
+
+<br>
+
+<b>👤 Customer:</b> ${order.name}
+
+<br>
+
+<b>📧 Email:</b> ${order.email}
+
+<br>
+
+<b>📞 Phone:</b> ${order.phone}
+
+<br>
+
+<b>📍 Address:</b> ${order.address}
+
+<br>
+
+<b>💰 Total:</b> ₹${order.total}
+
+<br>
+
+<b>💳 Payment:</b> ${order.payment}
+
+<br>
+
+<b>📦 Status:</b> ${order.status}
+
+<br>
+
+<b>🕐 Date:</b> ${order.date}
+
+</div>
+
+`;
+
+});
+
+box.innerHTML=html;
+
+}catch(error){
+
+box.innerText="Orders load nahi hue: "+error.message;
+
+}
+
+};
+
+
+/* ================= SEARCH ================= */
+
+document.getElementById("search").addEventListener(
+"input",
+function(){
+
+const text=this.value.toLowerCase();
+
+document.querySelectorAll(".shop").forEach(function(shop){
+
+shop.style.display=
+shop.innerText.toLowerCase().includes(text)
+?"block"
+:"none";
+
+});
+
+});
+
+
+/* ================= START ================= */
+
+showPage("home");
+
+</script>
+
+</body>
+</html>
+```
 
