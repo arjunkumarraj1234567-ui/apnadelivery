@@ -1,0 +1,10 @@
+{
+  "name": "ApnaDelivery",
+  "short_name": "ApnaDelivery",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f5f5",
+  "theme_color": "#16a34a",
+  "description": "Food and grocery delivery app",
+  "icons": []
+}
