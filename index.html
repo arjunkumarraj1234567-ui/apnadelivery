@@ -1039,6 +1039,19 @@ html+=`
 <br>
 
 <b>📦 Status:</b> ${order.status}
+<br>
+
+<button onclick="updateOrderStatus('${item.id}','Preparing')">
+🍳 Preparing
+</button>
+
+<button onclick="updateOrderStatus('${item.id}','Out for Delivery')">
+🚚 Out for Delivery
+</button>
+
+<button onclick="updateOrderStatus('${item.id}','Delivered')">
+✅ Delivered
+</button>
 
 <br>
 
@@ -1079,7 +1092,28 @@ shop.innerText.toLowerCase().includes(text)
 });
 
 });
+window.updateOrderStatus=async function(id,status){
 
+try{
+
+await updateDoc(
+doc(db,"orders",id),
+{
+status:status
+}
+);
+
+alert("Order status updated: "+status);
+
+loadAdminOrders();
+
+}catch(error){
+
+alert("Status update failed: "+error.message);
+
+}
+
+};
 
 /* ================= START ================= */
 
