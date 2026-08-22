@@ -1485,8 +1485,10 @@ document.getElementById("debugBox").innerText=
 "JS ERROR: "+e.message;
 });
   
+setTimeout(function(){
 document.getElementById("debugBox").innerText =
 "showLogin = " + typeof window.showLogin;
+},3000);
 </script>
 </body>
 </html>
