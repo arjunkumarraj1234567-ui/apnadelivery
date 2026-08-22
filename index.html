@@ -454,58 +454,6 @@ window.resetPassword=async function(){
 const email=document.getElementById("email").value.trim();
 
 if(!email){
-alert("Pehle email likhiye.");
-return;
-}
-
-try{
-
-await sendPasswordResetEmail(auth,email);
-
-alert("Password reset link aapke email par bhej diya gaya hai.");
-
-}catch(error){
-
-alert("Reset failed: "+error.message);
-
-}
-
-};
-window.loginUser=async function(){
-
-const email=document.getElementById("email").value.trim();
-const password=document.getElementById("password").value;
-const message=document.getElementById("authMessage");
-
-if(!email||!password){
-
-message.innerText="Email aur password bhariye.";
-return;
-
-}
-
-try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-message.innerText="Login successful.";
-
-}catch(error){
-
-message.innerText="Login failed: "+error.message;
-
-}
-
-};
-
-
-window.logoutUser=async function(){
-
-await signOut(auth);
 
 };
 
