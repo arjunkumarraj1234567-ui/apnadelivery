@@ -1475,5 +1475,15 @@ navigator.serviceWorker.register("./sw.js");
 
 </script>
 
+  <div id="debugBox" style="position:fixed;bottom:0;left:0;right:0;background:#fff;color:red;padding:15px;z-index:99999;font-size:14px;">
+JS TEST: Page loaded
+</div>
+
+<script>
+window.addEventListener("error",function(e){
+document.getElementById("debugBox").innerText=
+"JS ERROR: "+e.message;
+});
+</script>
 </body>
 </html>
