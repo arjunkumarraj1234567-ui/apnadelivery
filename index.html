@@ -1,1480 +1,1715 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="manifest" href="manifest.json">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#16a34a">
+<meta name="description" content="ApnaDelivery - Food and Grocery Delivery">
+
+<link rel="manifest" href="manifest.json">
+
 <title>ApnaDelivery</title>
 
 <style>
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#f5f5f5;color:#222}
-header{background:#16a34a;color:#fff;padding:20px}
-header h1{margin:0}
-.search{width:100%;padding:13px;border:0;border-radius:10px;margin-top:12px}
-.container{max-width:700px;margin:auto;padding:18px}
-.card,.shop,.box{background:#fff;padding:18px;margin-top:15px;border-radius:15px}
-.categories{display:flex;gap:10px;overflow:auto}
-.category{background:#fff;padding:12px 18px;border-radius:20px;white-space:nowrap}
-.product{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-top:1px solid #eee}
-.price{color:#16a34a;font-weight:bold;margin-top:5px}
-button{background:#16a34a;color:#fff;border:0;padding:10px 15px;border-radius:8px;font-weight:bold;cursor:pointer}
-button.secondary{background:#2563eb}
-button.danger{background:#dc2626}
-button.gray{background:#4b5563}
-.full{width:100%;margin-top:10px;padding:13px}
-.input{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px}
-.hidden{display:none!important}
-.cart-bar{display:none;position:fixed;bottom:15px;left:15px;right:15px;background:#111827;color:#fff;padding:15px;border-radius:12px;justify-content:space-between;align-items:center}
-.cart-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
-.qty button{padding:5px 10px}
-.total{font-size:18px;font-weight:bold;margin-top:15px}
-.success{text-align:center}
-.nav{display:flex;gap:8px;overflow:auto;background:#fff;padding:10px}
-.nav button{white-space:nowrap}
-.order{border-top:1px solid #ddd;padding:15px 0}
-.message{margin-top:10px;font-weight:bold}
-.small{font-size:13px;color:#666}
-.auth-tabs{display:flex;gap:10px;margin-bottom:15px}
-.auth-tab{flex:1;background:#e5e7eb;color:#222}
-.auth-tab.active{background:#16a34a;color:#fff}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Arial,sans-serif;
+}
+
+body{
+  background:#f5f5f5;
+  color:#222;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.header{
+  background:#16a34a;
+  color:white;
+  padding:15px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.header-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.logo{
+  font-size:22px;
+  font-weight:bold;
+}
+
+.header-btn{
+  background:white;
+  color:#16a34a;
+  padding:8px 12px;
+  border-radius:8px;
+  font-weight:bold;
+}
+
+.container{
+  max-width:700px;
+  margin:auto;
+  padding:15px;
+}
+
+.search{
+  width:100%;
+  padding:13px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  margin:15px 0;
+  font-size:16px;
+}
+
+.categories{
+  display:flex;
+  gap:10px;
+  overflow-x:auto;
+  padding-bottom:10px;
+}
+
+.category{
+  background:white;
+  padding:10px 15px;
+  border-radius:20px;
+  white-space:nowrap;
+  border:1px solid #ddd;
+}
+
+.category.active{
+  background:#16a34a;
+  color:white;
+}
+
+.products{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
+}
+
+.product{
+  background:white;
+  border-radius:12px;
+  padding:12px;
+  box-shadow:0 2px 8px #00000010;
+}
+
+.product-img{
+  height:120px;
+  background:#eee;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:45px;
+  margin-bottom:10px;
+}
+
+.product h3{
+  font-size:16px;
+  margin-bottom:5px;
+}
+
+.price{
+  font-weight:bold;
+  color:#16a34a;
+  margin:8px 0;
+}
+
+.add-btn{
+  width:100%;
+  background:#16a34a;
+  color:white;
+  padding:10px;
+  border-radius:8px;
+}
+
+.section{
+  background:white;
+  padding:15px;
+  border-radius:12px;
+  margin-top:15px;
+}
+
+.hidden{
+  display:none!important;
+}
+
+.input{
+  width:100%;
+  padding:12px;
+  border:1px solid #ddd;
+  border-radius:8px;
+  margin:7px 0;
+}
+
+.primary{
+  width:100%;
+  background:#16a34a;
+  color:white;
+  padding:12px;
+  border-radius:8px;
+  margin-top:8px;
+}
+
+.secondary{
+  width:100%;
+  background:#eee;
+  color:#222;
+  padding:12px;
+  border-radius:8px;
+  margin-top:8px;
+}
+
+.danger{
+  background:#dc2626;
+  color:white;
+  padding:9px 12px;
+  border-radius:8px;
+}
+
+.cart-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
+}
+
+.qty{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.qty button{
+  width:30px;
+  height:30px;
+  border-radius:6px;
+  background:#eee;
+}
+
+.order{
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:10px;
+}
+
+.status{
+  display:inline-block;
+  padding:5px 9px;
+  border-radius:15px;
+  background:#dcfce7;
+  color:#166534;
+  font-size:13px;
+  margin-top:7px;
+}
+
+.nav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:white;
+  border-top:1px solid #ddd;
+  display:flex;
+  justify-content:space-around;
+  padding:9px;
+  z-index:100;
+}
+
+.nav button{
+  background:none;
+  font-size:12px;
+}
+
+.page{
+  padding-bottom:80px;
+}
+
+.modal{
+  position:fixed;
+  inset:0;
+  background:#0008;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:1000;
+  padding:15px;
+}
+
+.modal-box{
+  width:100%;
+  max-width:420px;
+  background:white;
+  border-radius:15px;
+  padding:20px;
+  max-height:90vh;
+  overflow:auto;
+}
+
+.close{
+  float:right;
+  background:#eee;
+  border-radius:50%;
+  width:30px;
+  height:30px;
+}
+
+.track{
+  margin-top:15px;
+}
+
+.track-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:12px 0;
+}
+
+.dot{
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  background:#ccc;
+}
+
+.dot.active{
+  background:#16a34a;
+}
+
+.admin-card{
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+@media(max-width:500px){
+  .products{
+    grid-template-columns:repeat(2,1fr);
+  }
+}
 </style>
 </head>
 
 <body>
 
-<header>
-<h1>ApnaDelivery 🛵</h1>
-<p>Food & Grocery delivered to your door</p>
-<input id="search" class="search" placeholder="Search food, grocery or shop...">
+<header class="header">
+  <div class="header-top">
+    <div class="logo">🚚 ApnaDelivery</div>
+    <button class="header-btn" onclick="openLogin()">Login</button>
+  </div>
 </header>
 
-<div class="nav">
-<button onclick="showPage('home')">🏠 Home</button>
-<button onclick="showPage('orders')">📦 My Orders</button>
-<button onclick="showPage('delivery')">🚚 Delivery</button>
-<button onclick="showPage('admin')">⚙️ Admin</button>
-</div>
+<div class="page">
 
-<div class="container">
+<main class="container">
 
-<!-- USER BAR -->
-<div class="card">
-<b id="userStatus">Not logged in</b>
+  <input
+    id="searchInput"
+    class="search"
+    placeholder="🔍 Search products..."
+    oninput="searchProducts()"
+  >
 
-<div id="userActions">
-<button class="secondary" onclick="showLogin()">Login / Signup</button>
-</div>
-</div>
+  <div class="categories">
+    <button class="category active" onclick="filterCategory('All',this)">All</button>
+    <button class="category" onclick="filterCategory('Grocery',this)">🛒 Grocery</button>
+    <button class="category" onclick="filterCategory('Food',this)">🍔 Food</button>
+    <button class="category" onclick="filterCategory('Drinks',this)">🥤 Drinks</button>
+    <button class="category" onclick="filterCategory('Daily',this)">🏠 Daily</button>
+  </div>
 
+  <section id="homeSection" class="section">
+    <h2>Nearby Products</h2>
+    <br>
+    <div id="productList" class="products"></div>
+  </section>
 
-<!-- LOGIN / SIGNUP -->
-<div id="loginBox" class="box hidden">
+  <section id="cartSection" class="section hidden">
+    <h2>🛒 My Cart</h2>
+    <br>
+    <div id="cartList"></div>
+    <hr><br>
+    <h3>Total: ₹<span id="cartTotal">0</span></h3>
+    <button class="primary" onclick="openCheckout()">Proceed to Checkout</button>
+  </section>
 
-<h2>🔐 Account</h2>
+  <section id="ordersSection" class="section hidden">
+    <h2>📦 My Orders</h2>
+    <br>
+    <div id="ordersList"></div>
+  </section>
 
-<div class="auth-tabs">
+  <section id="deliverySection" class="section hidden">
+    <h2>🛵 Delivery Panel</h2>
+    <br>
+    <div id="deliveryOrders"></div>
+  </section>
 
-<button id="loginTab"
-class="auth-tab active"
-onclick="showLoginForm()">
-Login
-</button>
+  <section id="adminSection" class="section hidden">
+    <h2>👨‍💼 Admin Panel</h2>
+    <br>
+    <button class="primary" onclick="loadAdminOrders()">Refresh Orders</button>
+    <br><br>
+    <div id="adminOrders"></div>
+  </section>
 
-<button id="signupTab"
-class="auth-tab"
-onclick="showSignupForm()">
-Signup
-</button>
+</main>
 
-</div>
-
-
-<!-- LOGIN FORM -->
-<div id="loginForm">
-
-<input
-id="loginEmail"
-class="input"
-type="email"
-placeholder="Email">
-
-<input
-id="loginPassword"
-class="input"
-type="password"
-placeholder="Password">
-
-<button class="full" onclick="loginUser()">
-Login
-</button>
-
-<button class="full gray" onclick="resetPassword()">
-Forgot Password
-</button>
-
-</div>
-
-
-<!-- SIGNUP FORM -->
-<div id="signupForm" class="hidden">
-
-<input
-id="signupEmail"
-class="input"
-type="email"
-placeholder="Email">
-
-<input
-id="signupPassword"
-class="input"
-type="password"
-placeholder="Password">
-
-<button class="full secondary" onclick="signupUser()">
-Create Account
-</button>
+<nav class="nav">
+  <button onclick="showSection('home')">🏠<br>Home</button>
+  <button onclick="showSection('cart')">🛒<br>Cart</button>
+  <button onclick="showSection('orders')">📦<br>Orders</button>
+  <button onclick="showSection('delivery')">🛵<br>Delivery</button>
+  <button onclick="openAccount()">👤<br>Account</button>
+</nav>
 
 </div>
 
-<div id="authMessage" class="message"></div>
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="modal hidden">
+  <div class="modal-box">
 
+    <button class="close" onclick="closeModal('loginModal')">×</button>
+
+    <h2>Login</h2>
+    <br>
+
+    <input id="loginEmail" class="input" type="email" placeholder="Email">
+    <input id="loginPassword" class="input" type="password" placeholder="Password">
+
+    <button class="primary" onclick="loginUser()">Login</button>
+
+    <button class="secondary" onclick="openSignup()">
+      Create New Account
+    </button>
+
+    <button class="secondary" onclick="forgotPassword()">
+      Forgot Password?
+    </button>
+
+    <p id="loginMessage"></p>
+
+  </div>
 </div>
 
+<!-- SIGNUP MODAL -->
+<div id="signupModal" class="modal hidden">
+  <div class="modal-box">
 
-<!-- HOME -->
-<div id="homePage">
+    <button class="close" onclick="closeModal('signupModal')">×</button>
 
-<h2>Categories</h2>
+    <h2>Create Account</h2>
+    <br>
 
-<div class="categories">
-<div class="category">🍔 Food</div>
-<div class="category">🛒 Grocery</div>
-<div class="category">🥤 Drinks</div>
-<div class="category">🍰 Sweets</div>
+    <input id="signupName" class="input" placeholder="Full Name">
+    <input id="signupEmail" class="input" type="email" placeholder="Email">
+    <input id="signupPassword" class="input" type="password" placeholder="Password">
+
+    <button class="primary" onclick="signupUser()">Create Account</button>
+
+    <p id="signupMessage"></p>
+
+  </div>
 </div>
 
-<h2>Nearby Shops</h2>
+<!-- CHECKOUT -->
+<div id="checkoutModal" class="modal hidden">
+  <div class="modal-box">
 
-<div class="shop">
+    <button class="close" onclick="closeModal('checkoutModal')">×</button>
 
-<h2>🍗 Royal Biryani</h2>
-<p>Indian • Biryani • 25 min</p>
+    <h2>Checkout</h2>
+    <br>
 
-<div class="product">
-<div>
-<b>Chicken Biryani</b>
-<div class="price">₹220</div>
+    <input id="customerName" class="input" placeholder="Name">
+    <input id="customerPhone" class="input" placeholder="Mobile Number">
+    <textarea id="customerAddress" class="input" rows="4" placeholder="Delivery Address"></textarea>
+
+    <select id="paymentMethod" class="input">
+      <option value="COD">Cash on Delivery</option>
+      <option value="UPI">UPI - Coming Soon</option>
+    </select>
+
+    <button class="primary" onclick="placeOrder()">Place Order</button>
+
+  </div>
 </div>
 
-<button onclick="addProduct('Chicken Biryani',220)">
-Add
-</button>
+<!-- ACCOUNT -->
+<div id="accountModal" class="modal hidden">
+  <div class="modal-box">
+
+    <button class="close" onclick="closeModal('accountModal')">×</button>
+
+    <h2>My Account</h2>
+    <br>
+
+    <div id="accountInfo"></div>
+
+    <button class="primary" onclick="openOrdersFromAccount()">
+      My Orders
+    </button>
+
+    <button class="danger" onclick="logoutUser()">
+      Logout
+    </button>
+
+  </div>
 </div>
-
-<div class="product">
-<div>
-<b>Veg Biryani</b>
-<div class="price">₹160</div>
-</div>
-
-<button onclick="addProduct('Veg Biryani',160)">
-Add
-</button>
-</div>
-
-</div>
-
-
-<div class="shop">
-
-<h2>🛒 Apna General Store</h2>
-<p>Grocery • 20 min</p>
-
-<div class="product">
-<div>
-<b>Milk 1L</b>
-<div class="price">₹60</div>
-</div>
-
-<button onclick="addProduct('Milk 1L',60)">
-Add
-</button>
-</div>
-
-<div class="product">
-<div>
-<b>Bread</b>
-<div class="price">₹40</div>
-</div>
-
-<button onclick="addProduct('Bread',40)">
-Add
-</button>
-</div>
-
-</div>
-
-
-<!-- CART -->
-<div id="cartBox" class="box hidden">
-
-<h2>🛒 Your Cart</h2>
-
-<div id="cartItems"></div>
-
-<div class="total">
-Subtotal: ₹<span id="subtotal">0</span>
-</div>
-
-<p>Delivery Charge: ₹30</p>
-
-<div class="total">
-Total: ₹<span id="total">30</span>
-</div>
-
-<button class="full" onclick="openAddress()">
-Place Order
-</button>
-
-</div>
-
-
-<!-- ADDRESS -->
-<div id="addressBox" class="box hidden">
-
-<h2>📍 Delivery Details</h2>
-
-<input id="name" class="input" placeholder="Your Name">
-
-<input id="phone" class="input" placeholder="Mobile Number">
-
-<textarea
-id="address"
-class="input"
-rows="4"
-placeholder="Full Address"></textarea>
-
-<input
-id="landmark"
-class="input"
-placeholder="Landmark (optional)">
-
-<select id="payment" class="input">
-<option>Cash on Delivery</option>
-<option>UPI</option>
-</select>
-
-<button class="full" onclick="confirmOrder()">
-Confirm Order
-</button>
-
-</div>
-
-
-<!-- SUCCESS -->
-<div id="successBox" class="box hidden success">
-
-<h1>🎉</h1>
-
-<h2>Order Confirmed!</h2>
-
-<p>
-Order ID: <b id="orderId"></b>
-</p>
-
-<p id="successText"></p>
-
-<button onclick="showPage('orders')">
-📦 My Orders
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ORDERS -->
-<div id="ordersPage" class="hidden">
-
-<div class="card">
-
-<h2>📦 My Orders</h2>
-
-<div id="orderHistory">
-Login karke orders dekhein.
-</div>
-
-</div>
-
-</div>
-
-
-<!-- DELIVERY -->
-<div id="deliveryPage" class="hidden">
-
-<div class="card">
-
-<h2>🚚 Delivery Partner</h2>
-
-<div id="deliveryLoginMessage">
-Login karke available deliveries dekhein.
-</div>
-
-<button onclick="loadDeliveryOrders()">
-🔄 Refresh
-</button>
-
-<div id="deliveryOrders"></div>
-
-</div>
-
-</div>
-
-
-<!-- ADMIN -->
-<div id="adminPage" class="hidden">
-
-<div class="card">
-
-<h2>⚙️ Admin Dashboard</h2>
-
-<p class="small">
-Admin access Firebase account ke email se control hota hai.
-</p>
-
-<button onclick="loadAdminOrders()">
-🔄 Refresh Orders
-</button>
-
-<div id="adminOrders"></div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- CART BAR -->
-<div id="cartBar" class="cart-bar">
-
-<span>
-🛒 <b id="cartCount">0</b> items
-</span>
-
-<button onclick="showCart()">
-View Cart
-</button>
-
-</div>
-
 
 <script type="module">
-  document.body.setAttribute("data-module-test","OK");
-
-import {initializeApp}
-from "https://www.gstatic.com/firebasejs/12.7.1/firebase-app.js";
 
 import {
-getAuth,
-createUserWithEmailAndPassword,
-signInWithEmailAndPassword,
-signOut,
-onAuthStateChanged,
-sendPasswordResetEmail
-}
-from "https://www.gstatic.com/firebasejs/12.7.1/firebase-auth.js";
+  initializeApp
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
-getFirestore,
-collection,
-addDoc,
-getDocs,
-doc,
-updateDoc,
-query,
-where
-}
-from "https://www.gstatic.com/firebasejs/12.7.1/firebase-firestore.js";
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  onAuthStateChanged,
+  updateProfile
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  serverTimestamp,
+  doc,
+  updateDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-/* ================= FIREBASE ================= */
+/* =========================================================
+   FIREBASE CONFIG
+   =========================================================
+   YAHAN APNE FIREBASE PROJECT KA EXISTING CONFIG PASTE KARO.
+*/
 
-const firebaseConfig={
-apiKey:"AIzaSyDn5Pyl-x8PrfDB6Jt2KYjodFFNDuiLTZw",
-authDomain:"apnadelivery-cccab.firebaseapp.com",
-projectId:"apnadelivery-cccab",
-storageBucket:"apnadelivery-cccab.firebasestorage.app",
-messagingSenderId:"865797686484",
-appId:"1:865797686484:web:d66decd41d04332470e741",
-measurementId:"G-H75X6574QQ"
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+  messagingSenderId: "PASTE_YOUR_MESSAGING_SENDER_ID",
+  appId: "PASTE_YOUR_APP_ID"
 };
 
-const app=initializeApp(firebaseConfig);
-const auth=getAuth(app);
-const db=getFirestore(app);
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+
+const db = getFirestore(app);
 
 
-/* ================= ROLES ================= */
+/* =========================================================
+   ADMIN
+   ========================================================= */
 
-const ADMIN_EMAILS=[
-"arjunpaawan12@gmail.com"
+const ADMIN_EMAILS = [
+  "arjunpaawan12@gmail.com"
 ];
 
-const DELIVERY_EMAILS=[
-"arjunkumarraj1234567@gmail.com"
+
+/* =========================================================
+   PRODUCTS
+   ========================================================= */
+
+let products = [
+  {
+    id:"p1",
+    name:"Rice 5 KG",
+    price:350,
+    category:"Grocery",
+    emoji:"🍚"
+  },
+  {
+    id:"p2",
+    name:"Wheat Flour 5 KG",
+    price:280,
+    category:"Grocery",
+    emoji:"🌾"
+  },
+  {
+    id:"p3",
+    name:"Milk 1 Litre",
+    price:65,
+    category:"Daily",
+    emoji:"🥛"
+  },
+  {
+    id:"p4",
+    name:"Bread",
+    price:45,
+    category:"Daily",
+    emoji:"🍞"
+  },
+  {
+    id:"p5",
+    name:"Burger",
+    price:120,
+    category:"Food",
+    emoji:"🍔"
+  },
+  {
+    id:"p6",
+    name:"Pizza",
+    price:220,
+    category:"Food",
+    emoji:"🍕"
+  },
+  {
+    id:"p7",
+    name:"Cold Drink",
+    price:50,
+    category:"Drinks",
+    emoji:"🥤"
+  },
+  {
+    id:"p8",
+    name:"Water Bottle",
+    price:20,
+    category:"Drinks",
+    emoji:"💧"
+  }
 ];
 
 
-/* ================= STATE ================= */
+let cart = [];
 
-let currentUser=null;
-let cart=[];
+let currentCategory = "All";
 
 
-/* ================= PAGE ================= */
+/* =========================================================
+   PRODUCT DISPLAY
+   ========================================================= */
 
-window.showPage=function(page){
+function renderProducts(list=products){
 
-document.getElementById("homePage").classList.add("hidden");
-document.getElementById("ordersPage").classList.add("hidden");
-document.getElementById("deliveryPage").classList.add("hidden");
-document.getElementById("adminPage").classList.add("hidden");
+  const box = document.getElementById("productList");
 
-if(page==="home"){
-document.getElementById("homePage").classList.remove("hidden");
+  box.innerHTML = "";
+
+  list.forEach(product => {
+
+    box.innerHTML += `
+
+      <div class="product">
+
+        <div class="product-img">
+          ${product.emoji}
+        </div>
+
+        <h3>${product.name}</h3>
+
+        <div class="price">
+          ₹${product.price}
+        </div>
+
+        <small>${product.category}</small>
+
+        <br><br>
+
+        <button class="add-btn"
+          onclick="addToCart('${product.id}')">
+
+          Add
+
+        </button>
+
+      </div>
+
+    `;
+
+  });
+
 }
 
-if(page==="orders"){
-document.getElementById("ordersPage").classList.remove("hidden");
-loadMyOrders();
-}
 
-if(page==="delivery"){
-document.getElementById("deliveryPage").classList.remove("hidden");
-loadDeliveryOrders();
-}
+/* =========================================================
+   SEARCH
+   ========================================================= */
 
-if(page==="admin"){
-document.getElementById("adminPage").classList.remove("hidden");
-loadAdminOrders();
-}
+window.searchProducts = function(){
+
+  const text =
+    document
+      .getElementById("searchInput")
+      .value
+      .toLowerCase();
+
+  let result = products.filter(p => {
+
+    const matchText =
+      p.name.toLowerCase().includes(text);
+
+    const matchCategory =
+      currentCategory === "All" ||
+      p.category === currentCategory;
+
+    return matchText && matchCategory;
+
+  });
+
+  renderProducts(result);
 
 };
 
 
-/* ================= LOGIN BOX ================= */
+/* =========================================================
+   CATEGORY
+   ========================================================= */
 
-window.showLogin=function(){
+window.filterCategory = function(category,button){
 
-document.getElementById("loginBox").classList.remove("hidden");
+  currentCategory = category;
 
-showLoginForm();
+  document
+    .querySelectorAll(".category")
+    .forEach(x => x.classList.remove("active"));
 
-document.getElementById("loginBox").scrollIntoView({
-behavior:"smooth",
-block:"start"
-});
+  button.classList.add("active");
 
-};
-
-
-window.showLoginForm=function(){
-
-document.getElementById("loginForm").classList.remove("hidden");
-
-document.getElementById("signupForm").classList.add("hidden");
-
-document.getElementById("loginTab").classList.add("active");
-
-document.getElementById("signupTab").classList.remove("active");
-
-document.getElementById("authMessage").innerText="";
+  searchProducts();
 
 };
 
 
-window.showSignupForm=function(){
+/* =========================================================
+   CART
+   ========================================================= */
 
-document.getElementById("loginForm").classList.add("hidden");
+window.addToCart = function(id){
 
-document.getElementById("signupForm").classList.remove("hidden");
+  const product =
+    products.find(p => p.id === id);
 
-document.getElementById("loginTab").classList.remove("active");
+  if(!product) return;
 
-document.getElementById("signupTab").classList.add("active");
+  const existing =
+    cart.find(x => x.id === id);
 
-document.getElementById("authMessage").innerText="";
+  if(existing){
 
-};
+    existing.qty++;
 
+  }else{
 
-/* ================= SIGNUP ================= */
+    cart.push({
+      ...product,
+      qty:1
+    });
 
-window.signupUser=async function(){
+  }
 
-const email=
-document.getElementById("signupEmail").value.trim();
-
-const password=
-document.getElementById("signupPassword").value;
-
-const message=
-document.getElementById("authMessage");
-
-if(!email||!password){
-
-message.innerText=
-"Email aur password bhariye.";
-
-return;
-
-}
-
-if(password.length<6){
-
-message.innerText=
-"Password kam se kam 6 characters ka hona chahiye.";
-
-return;
-
-}
-
-try{
-
-await createUserWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-message.innerText=
-"Account created successfully.";
-
-}catch(error){
-
-message.innerText=
-error.message;
-
-}
+  renderCart();
 
 };
 
 
-/* ================= LOGIN ================= */
+window.changeQty = function(id,change){
 
-window.loginUser=async function(){
+  const item =
+    cart.find(x => x.id === id);
 
-const email=
-document.getElementById("loginEmail").value.trim();
+  if(!item) return;
 
-const password=
-document.getElementById("loginPassword").value;
+  item.qty += change;
 
-const message=
-document.getElementById("authMessage");
+  if(item.qty <= 0){
 
-if(!email||!password){
+    cart =
+      cart.filter(x => x.id !== id);
 
-message.innerText=
-"Email aur password bhariye.";
+  }
 
-return;
-
-}
-
-try{
-
-await signInWithEmailAndPassword(
-auth,
-email,
-password
-);
-
-message.innerText=
-"Login successful.";
-
-}catch(error){
-
-message.innerText=
-"Login failed: "+error.message;
-
-}
-
-};
-
-
-/* ================= FORGOT PASSWORD ================= */
-
-window.resetPassword=async function(){
-
-const email=
-document.getElementById("loginEmail").value.trim();
-
-if(!email){
-
-alert(
-"Pehle login wale Email box mein email likhiye."
-);
-
-return;
-
-}
-
-try{
-
-await sendPasswordResetEmail(
-auth,
-email
-);
-
-alert(
-"Password reset link aapke email par bhej diya gaya hai."
-);
-
-}catch(error){
-
-alert(
-"Reset failed: "+error.message
-);
-
-}
-
-};
-
-
-/* ================= LOGOUT ================= */
-
-window.logoutUser=async function(){
-
-await signOut(auth);
-
-};
-
-
-/* ================= AUTH STATE ================= */
-
-onAuthStateChanged(auth,function(user){
-
-currentUser=user;
-
-const status=
-document.getElementById("userStatus");
-
-const actions=
-document.getElementById("userActions");
-
-if(user){
-
-status.innerText=
-"Logged in: "+user.email;
-
-actions.innerHTML=`
-<button class="danger" onclick="logoutUser()">
-Logout
-</button>
-`;
-
-document.getElementById("loginBox")
-.classList.add("hidden");
-
-}else{
-
-status.innerText="Not logged in";
-
-actions.innerHTML=`
-<button class="secondary" onclick="showLogin()">
-Login / Signup
-</button>
-`;
-
-}
-
-});
-
-
-/* ================= CART ================= */
-
-window.addProduct=function(name,price){
-
-const item=
-cart.find(x=>x.name===name);
-
-if(item){
-
-item.quantity++;
-
-}else{
-
-cart.push({
-name:name,
-price:price,
-quantity:1
-});
-
-}
-
-updateCart();
-
-};
-
-
-function updateCart(){
-
-let count=0;
-
-cart.forEach(x=>{
-count+=x.quantity;
-});
-
-document.getElementById("cartCount")
-.innerText=count;
-
-document.getElementById("cartBar")
-.style.display=
-count>0?"flex":"none";
-
-};
-
-
-window.showCart=function(){
-
-document.getElementById("cartBox")
-.classList.remove("hidden");
-
-renderCart();
+  renderCart();
 
 };
 
 
 function renderCart(){
 
-let html="";
-let subtotal=0;
+  const box =
+    document.getElementById("cartList");
 
-cart.forEach(function(item,index){
+  box.innerHTML = "";
 
-subtotal+=
-item.price*item.quantity;
+  let total = 0;
 
-html+=`
+  if(cart.length === 0){
 
-<div class="cart-item">
+    box.innerHTML =
+      "<p>Your cart is empty.</p>";
 
-<div>
-<b>${item.name}</b><br>
-₹${item.price}
-</div>
+  }
 
-<div class="qty">
+  cart.forEach(item => {
 
-<button onclick="decrease(${index})">
-−
-</button>
+    const amount =
+      item.price * item.qty;
 
-${item.quantity}
+    total += amount;
 
-<button onclick="increase(${index})">
-+
-</button>
+    box.innerHTML += `
 
-</div>
+      <div class="cart-item">
 
-</div>
+        <div>
 
-`;
+          <b>${item.name}</b>
 
-});
+          <br>
 
-document.getElementById("cartItems")
-.innerHTML=html;
+          ₹${item.price} × ${item.qty}
 
-document.getElementById("subtotal")
-.innerText=subtotal;
+        </div>
 
-document.getElementById("total")
-.innerText=subtotal+30;
+        <div class="qty">
+
+          <button
+            onclick="changeQty('${item.id}',-1)">
+            −
+          </button>
+
+          <b>${item.qty}</b>
+
+          <button
+            onclick="changeQty('${item.id}',1)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+  document.getElementById("cartTotal").textContent =
+    total;
+
+}
+
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+window.openLogin = function(){
+
+  document
+    .getElementById("loginModal")
+    .classList.remove("hidden");
 
 };
 
 
-window.increase=function(index){
+window.openSignup = function(){
 
-cart[index].quantity++;
+  closeModal("loginModal");
+
+  document
+    .getElementById("signupModal")
+    .classList.remove("hidden");
+
+};
+
+
+window.loginUser = async function(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const message =
+    document.getElementById("loginMessage");
+
+  if(!email || !password){
+
+    message.textContent =
+      "Email aur password bharo.";
+
+    return;
+
+  }
+
+  try{
+
+    await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    message.textContent =
+      "Login successful.";
+
+    closeModal("loginModal");
+
+  }catch(error){
+
+    message.textContent =
+      error.message;
+
+  }
+
+};
+
+
+/* =========================================================
+   SIGNUP
+   ========================================================= */
+
+window.signupUser = async function(){
+
+  const name =
+    document.getElementById("signupName").value.trim();
+
+  const email =
+    document.getElementById("signupEmail").value.trim();
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  const message =
+    document.getElementById("signupMessage");
+
+  if(!name || !email || !password){
+
+    message.textContent =
+      "Sabhi fields bharo.";
+
+    return;
+
+  }
+
+  if(password.length < 6){
+
+    message.textContent =
+      "Password kam se kam 6 characters ka hona chahiye.";
+
+    return;
+
+  }
+
+  try{
+
+    const result =
+      await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+    await updateProfile(
+      result.user,
+      {
+        displayName:name
+      }
+    );
+
+    message.textContent =
+      "Account successfully created.";
+
+    closeModal("signupModal");
+
+  }catch(error){
+
+    message.textContent =
+      error.message;
+
+  }
+
+};
+
+
+/* =========================================================
+   FORGOT PASSWORD
+   ========================================================= */
+
+window.forgotPassword = async function(){
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  if(!email){
+
+    alert("Pehle email address enter karo.");
+
+    return;
+
+  }
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      email
+    );
+
+    alert(
+      "Password reset link tumhare email par bhej diya gaya hai."
+    );
+
+  }catch(error){
+
+    alert(error.message);
+
+  }
+
+};
+
+
+/* =========================================================
+   LOGOUT
+   ========================================================= */
+
+window.logoutUser = async function(){
+
+  await signOut(auth);
+
+  closeModal("accountModal");
+
+  alert("Logout successful.");
+
+};
+
+
+/* =========================================================
+   AUTH STATE
+   ========================================================= */
+
+onAuthStateChanged(auth,user => {
+
+  const loginButton =
+    document.querySelector(".header-btn");
+
+  if(user){
+
+    loginButton.textContent =
+      "Account";
+
+    loginButton.onclick =
+      openAccount;
+
+    if(
+      ADMIN_EMAILS.includes(
+        user.email.toLowerCase()
+      )
+    ){
+
+      document
+        .getElementById("adminSection")
+        .classList.remove("hidden");
+
+    }
+
+  }else{
+
+    loginButton.textContent =
+      "Login";
+
+    loginButton.onclick =
+      openLogin;
+
+    document
+      .getElementById("adminSection")
+      .classList.add("hidden");
+
+  }
+
+});
+
+
+/* =========================================================
+   CHECKOUT
+   ========================================================= */
+
+window.openCheckout = function(){
+
+  if(cart.length === 0){
+
+    alert("Cart empty hai.");
+
+    return;
+
+  }
+
+  if(!auth.currentUser){
+
+    alert("Order karne ke liye login karo.");
+
+    openLogin();
+
+    return;
+
+  }
+
+  document
+    .getElementById("checkoutModal")
+    .classList.remove("hidden");
+
+};
+
+
+window.placeOrder = async function(){
+
+  const user = auth.currentUser;
+
+  if(!user){
+
+    alert("Please login first.");
+
+    return;
+
+  }
+
+  if(cart.length === 0){
+
+    alert("Cart empty hai.");
+
+    return;
+
+  }
+
+  const name =
+    document.getElementById("customerName").value.trim();
+
+  const phone =
+    document.getElementById("customerPhone").value.trim();
+
+  const address =
+    document.getElementById("customerAddress").value.trim();
+
+  const payment =
+    document.getElementById("paymentMethod").value;
+
+  if(!name || !phone || !address){
+
+    alert("Name, mobile aur address bharo.");
+
+    return;
+
+  }
+
+  const total =
+    cart.reduce(
+      (sum,item) =>
+        sum + item.price * item.qty,
+      0
+    );
+
+  try{
+
+    await addDoc(
+      collection(db,"orders"),
+      {
+
+        userId:user.uid,
+
+        userEmail:user.email,
+
+        customerName:name,
+
+        phone:phone,
+
+        address:address,
+
+        paymentMethod:payment,
+
+        items:cart,
+
+        total:total,
+
+        status:"Order Confirmed",
+
+        createdAt:serverTimestamp()
+
+      }
+    );
+
+    cart = [];
+
+    renderCart();
+
+    closeModal("checkoutModal");
+
+    alert(
+      "Order successfully placed."
+    );
+
+    showSection("orders");
+
+    loadMyOrders();
+
+  }catch(error){
+
+    alert(
+      "Order error: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   MY ORDERS
+   ========================================================= */
+
+window.loadMyOrders = async function(){
+
+  const user = auth.currentUser;
+
+  const box =
+    document.getElementById("ordersList");
+
+  if(!user){
+
+    box.innerHTML =
+      "<p>Please login to see your orders.</p>";
+
+    return;
+
+  }
+
+  box.innerHTML =
+    "<p>Loading orders...</p>";
+
+  try{
+
+    const q =
+      query(
+        collection(db,"orders"),
+        where(
+          "userId",
+          "==",
+          user.uid
+        )
+      );
+
+    const snapshot =
+      await getDocs(q);
+
+    box.innerHTML = "";
+
+    if(snapshot.empty){
+
+      box.innerHTML =
+        "<p>No orders found.</p>";
+
+      return;
+
+    }
+
+    snapshot.forEach(orderDoc => {
+
+      const order =
+        orderDoc.data();
+
+      const id =
+        orderDoc.id;
+
+      box.innerHTML += `
+
+        <div class="order">
+
+          <b>Order ID:</b> ${id}
+
+          <br><br>
+
+          <b>Total:</b> ₹${order.total}
+
+          <br>
+
+          <b>Payment:</b> ${order.paymentMethod}
+
+          <br>
+
+          <b>Address:</b> ${order.address}
+
+          <br>
+
+          <span class="status">
+            ${order.status || "Order Confirmed"}
+          </span>
+
+          <div class="track">
+
+            <div class="track-row">
+              <span class="dot active"></span>
+              Order Confirmed
+            </div>
+
+            <div class="track-row">
+              <span class="dot ${
+                order.status === "Out for Delivery" ||
+                order.status === "Delivered"
+                  ? "active"
+                  : ""
+              }"></span>
+              Out for Delivery
+            </div>
+
+            <div class="track-row">
+              <span class="dot ${
+                order.status === "Delivered"
+                  ? "active"
+                  : ""
+              }"></span>
+              Delivered
+            </div>
+
+          </div>
+
+        </div>
+
+      `;
+
+    });
+
+  }catch(error){
+
+    box.innerHTML =
+      "<p>Error loading orders.</p>";
+
+  }
+
+};
+
+
+/* =========================================================
+   DELIVERY PANEL
+   ========================================================= */
+
+window.loadDeliveryOrders = async function(){
+
+  const box =
+    document.getElementById("deliveryOrders");
+
+  box.innerHTML =
+    "<p>Loading...</p>";
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(db,"orders")
+      );
+
+    box.innerHTML = "";
+
+    snapshot.forEach(orderDoc => {
+
+      const order =
+        orderDoc.data();
+
+      const id =
+        orderDoc.id;
+
+      box.innerHTML += `
+
+        <div class="order">
+
+          <b>Order:</b> ${id}
+
+          <br>
+
+          <b>Customer:</b>
+          ${order.customerName}
+
+          <br>
+
+          <b>Phone:</b>
+          ${order.phone}
+
+          <br>
+
+          <b>Address:</b>
+          ${order.address}
+
+          <br>
+
+          <b>Status:</b>
+          ${order.status}
+
+          <br><br>
+
+          <button
+            class="primary"
+            onclick="updateOrderStatus('${id}','Out for Delivery')">
+
+            Accept / Out for Delivery
+
+          </button>
+
+          <button
+            class="primary"
+            onclick="updateOrderStatus('${id}','Delivered')">
+
+            Mark Delivered
+
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+  }catch(error){
+
+    box.innerHTML =
+      "<p>Error loading delivery orders.</p>";
+
+  }
+
+};
+
+
+window.updateOrderStatus = async function(
+  id,
+  status
+){
+
+  try{
+
+    await updateDoc(
+      doc(db,"orders",id),
+      {
+        status:status
+      }
+    );
+
+    alert(
+      "Order status updated."
+    );
+
+    loadDeliveryOrders();
+
+    loadMyOrders();
+
+  }catch(error){
+
+    alert(
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =========================================================
+   ADMIN ORDERS
+   ========================================================= */
+
+window.loadAdminOrders = async function(){
+
+  const user = auth.currentUser;
+
+  if(
+    !user ||
+    !ADMIN_EMAILS.includes(
+      user.email.toLowerCase()
+    )
+  ){
+
+    alert("Admin access required.");
+
+    return;
+
+  }
+
+  const box =
+    document.getElementById("adminOrders");
+
+  box.innerHTML =
+    "<p>Loading...</p>";
+
+  try{
+
+    const snapshot =
+      await getDocs(
+        collection(db,"orders")
+      );
+
+    box.innerHTML = "";
+
+    snapshot.forEach(orderDoc => {
+
+      const order =
+        orderDoc.data();
+
+      const id =
+        orderDoc.id;
+
+      box.innerHTML += `
+
+        <div class="admin-card">
+
+          <b>Order ID:</b>
+          ${id}
+
+          <br><br>
+
+          <b>Customer:</b>
+          ${order.customerName}
+
+          <br>
+
+          <b>Email:</b>
+          ${order.userEmail}
+
+          <br>
+
+          <b>Phone:</b>
+          ${order.phone}
+
+          <br>
+
+          <b>Address:</b>
+          ${order.address}
+
+          <br>
+
+          <b>Total:</b>
+          ₹${order.total}
+
+          <br>
+
+          <b>Status:</b>
+          ${order.status}
+
+          <br><br>
+
+          <button
+            class="primary"
+            onclick="updateOrderStatus('${id}','Out for Delivery')">
+
+            Out for Delivery
+
+          </button>
+
+          <button
+            class="primary"
+            onclick="updateOrderStatus('${id}','Delivered')">
+
+            Delivered
+
+          </button>
+
+        </div>
+
+      `;
+
+    });
+
+  }catch(error){
+
+    box.innerHTML =
+      "<p>Admin error: " +
+      error.message +
+      "</p>";
+
+  }
+
+};
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+window.showSection = function(section){
+
+  document
+    .getElementById("homeSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("cartSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("ordersSection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("deliverySection")
+    .classList.add("hidden");
+
+  document
+    .getElementById("adminSection")
+    .classList.add("hidden");
+
+  if(section === "home"){
+
+    document
+      .getElementById("homeSection")
+      .classList.remove("hidden");
+
+  }
+
+  if(section === "cart"){
+
+    document
+      .getElementById("cartSection")
+      .classList.remove("hidden");
+
+    renderCart();
+
+  }
+
+  if(section === "orders"){
+
+    document
+      .getElementById("ordersSection")
+      .classList.remove("hidden");
+
+    loadMyOrders();
+
+  }
+
+  if(section === "delivery"){
+
+    document
+      .getElementById("deliverySection")
+      .classList.remove("hidden");
+
+    loadDeliveryOrders();
+
+  }
+
+  if(section === "admin"){
+
+    document
+      .getElementById("adminSection")
+      .classList.remove("hidden");
+
+    loadAdminOrders();
+
+  }
+
+};
+
+
+window.openAccount = function(){
+
+  const user =
+    auth.currentUser;
+
+  if(!user){
+
+    openLogin();
+
+    return;
+
+  }
+
+  document
+    .getElementById("accountInfo")
+    .innerHTML = `
+
+      <p><b>Name:</b>
+      ${user.displayName || "Customer"}</p>
+
+      <p><b>Email:</b>
+      ${user.email}</p>
+
+    `;
+
+  document
+    .getElementById("accountModal")
+    .classList.remove("hidden");
+
+};
+
+
+window.openOrdersFromAccount = function(){
+
+  closeModal("accountModal");
+
+  showSection("orders");
+
+};
+
+
+window.closeModal = function(id){
+
+  document
+    .getElementById(id)
+    .classList.add("hidden");
+
+};
+
+
+window.closeModal = closeModal;
+
+
+/* =========================================================
+   INITIAL
+   ========================================================= */
+
+renderProducts();
 
 renderCart();
-updateCart();
-
-};
-
-
-window.decrease=function(index){
-
-cart[index].quantity--;
-
-if(cart[index].quantity<=0){
-
-cart.splice(index,1);
-
-}
-
-renderCart();
-updateCart();
-
-};
-
-
-/* ================= ORDER ================= */
-
-window.openAddress=function(){
-
-if(!currentUser){
-
-alert(
-"Order place karne ke liye pehle login karein."
-);
-
-showLogin();
-
-return;
-
-}
-
-if(cart.length===0){
-
-alert("Cart is empty.");
-
-return;
-
-}
-
-document.getElementById("addressBox")
-.classList.remove("hidden");
-
-};
-
-
-window.confirmOrder=async function(){
-
-if(!currentUser){
-
-alert("Please login first.");
-
-return;
-
-}
-
-const name=
-document.getElementById("name")
-.value.trim();
-
-const phone=
-document.getElementById("phone")
-.value.trim();
-
-const address=
-document.getElementById("address")
-.value.trim();
-
-const landmark=
-document.getElementById("landmark")
-.value.trim();
-
-const payment=
-document.getElementById("payment")
-.value;
-
-if(!name||!phone||!address){
-
-alert(
-"Name, mobile aur address bhariye."
-);
-
-return;
-
-}
-
-let subtotal=0;
-
-cart.forEach(x=>{
-subtotal+=
-x.price*x.quantity;
-});
-
-const order={
-
-id:
-"AD"+Math.floor(
-100000+Math.random()*900000
-),
-
-userId:currentUser.uid,
-
-email:currentUser.email,
-
-name:name,
-
-phone:phone,
-
-address:address,
-
-landmark:landmark,
-
-payment:payment,
-
-items:cart.map(x=>({
-
-name:x.name,
-price:x.price,
-quantity:x.quantity
-
-})),
-
-total:subtotal+30,
-
-status:"Order Confirmed",
-
-date:new Date().toLocaleString()
-
-};
-
-try{
-
-await addDoc(
-collection(db,"orders"),
-order
-);
-
-document.getElementById("orderId")
-.innerText=order.id;
-
-document.getElementById("successText")
-.innerText=
-"Thank you "+name+
-"! Your order has been saved.";
-
-document.getElementById("cartBox")
-.classList.add("hidden");
-
-document.getElementById("addressBox")
-.classList.add("hidden");
-
-document.getElementById("successBox")
-.classList.remove("hidden");
-
-cart=[];
-
-updateCart();
-
-}catch(error){
-
-alert(
-"Order save nahi hua: "+error.message
-);
-
-}
-
-};
-
-
-/* ================= CUSTOMER ORDERS ================= */
-
-async function loadMyOrders(){
-
-const box=
-document.getElementById("orderHistory");
-
-if(!currentUser){
-
-box.innerText=
-"Please login first.";
-
-return;
-
-}
-
-box.innerText="Loading...";
-
-try{
-
-const q=query(
-collection(db,"orders"),
-where("userId","==",currentUser.uid)
-);
-
-const snapshot=
-await getDocs(q);
-
-if(snapshot.empty){
-
-box.innerText=
-"No orders yet.";
-
-return;
-
-}
-
-let html="";
-
-snapshot.forEach(function(item){
-
-const order=item.data();
-
-html+=`
-
-<div class="order">
-
-<b>Order ID:</b>
-${order.id}
-
-<br>
-
-<b>Total:</b>
-₹${order.total}
-
-<br>
-
-<b>Status:</b>
-${order.status}
-
-<br>
-
-<b>Payment:</b>
-${order.payment}
-
-<br>
-
-<b>Date:</b>
-${order.date}
-
-</div>
-
-`;
-
-});
-
-box.innerHTML=html;
-
-}catch(error){
-
-box.innerText=
-"Orders load nahi hue: "+
-error.message;
-
-}
-
-}
-
-
-/* ================= DELIVERY ================= */
-
-window.loadDeliveryOrders=async function(){
-
-const box=
-document.getElementById("deliveryOrders");
-
-if(!currentUser){
-
-box.innerHTML=
-"<p>Please login first.</p>";
-
-return;
-
-}
-
-if(
-DELIVERY_EMAILS.length>0 &&
-!DELIVERY_EMAILS.includes(
-currentUser.email
-)
-){
-
-box.innerHTML=
-"<p>Delivery Partner access nahi hai.</p>";
-
-return;
-
-}
-
-box.innerHTML=
-"<p>Loading...</p>";
-
-try{
-
-const snapshot=
-await getDocs(
-collection(db,"orders")
-);
-
-let html="";
-
-snapshot.forEach(function(item){
-
-const order=item.data();
-
-if(
-order.status==="Order Confirmed" ||
-order.status==="Out for Delivery"
-){
-
-html+=`
-
-<div class="order">
-
-<b>🆔 Order:</b>
-${order.id}
-
-<br>
-
-<b>👤 Customer:</b>
-${order.name}
-
-<br>
-
-<b>📞 Phone:</b>
-${order.phone}
-
-<br>
-
-<b>📍 Address:</b>
-${order.address}
-
-<br>
-
-<b>💰 Total:</b>
-₹${order.total}
-
-<br>
-
-<b>Status:</b>
-${order.status}
-
-<br>
-
-`;
-
-if(
-order.status==="Order Confirmed"
-){
-
-html+=`
-
-<button onclick="acceptDelivery('${item.id}')">
-✅ Accept Delivery
-</button>
-
-`;
-
-}
-
-if(
-order.status==="Out for Delivery"
-){
-
-html+=`
-
-<button onclick="markDelivered('${item.id}')">
-📦 Mark Delivered
-</button>
-
-`;
-
-}
-
-html+=`
-
-</div>
-
-`;
-
-}
-
-});
-
-box.innerHTML=
-html ||
-"<p>No delivery available.</p>";
-
-}catch(error){
-
-box.innerText=
-"Error: "+error.message;
-
-}
-
-};
-
-
-window.acceptDelivery=async function(id){
-
-try{
-
-await updateDoc(
-doc(db,"orders",id),
-{
-status:"Out for Delivery"
-}
-);
-
-alert("Delivery accepted.");
-
-loadDeliveryOrders();
-
-}catch(error){
-
-alert(
-"Update failed: "+error.message
-);
-
-}
-
-};
-
-
-window.markDelivered=async function(id){
-
-try{
-
-await updateDoc(
-doc(db,"orders",id),
-{
-status:"Delivered"
-}
-);
-
-alert(
-"Order marked as delivered."
-);
-
-loadDeliveryOrders();
-
-}catch(error){
-
-alert(
-"Update failed: "+error.message
-);
-
-}
-
-};
-
-
-/* ================= ADMIN ================= */
-
-window.loadAdminOrders=async function(){
-
-const box=
-document.getElementById("adminOrders");
-
-if(!currentUser){
-
-box.innerHTML=
-"<p>Please login first.</p>";
-
-return;
-
-}
-
-if(
-ADMIN_EMAILS.length>0 &&
-!ADMIN_EMAILS.includes(
-currentUser.email
-)
-){
-
-box.innerHTML=
-"<p>Admin access denied.</p>";
-
-return;
-
-}
-
-box.innerHTML=
-"<p>Loading orders...</p>";
-
-try{
-
-const snapshot=
-await getDocs(
-collection(db,"orders")
-);
-
-if(snapshot.empty){
-
-box.innerHTML=
-"<p>No orders yet.</p>";
-
-return;
-
-}
-
-let html="";
-
-snapshot.forEach(function(item){
-
-const order=item.data();
-
-html+=`
-
-<div class="order">
-
-<b>🆔 Order ID:</b>
-${order.id}
-
-<br>
-
-<b>👤 Customer:</b>
-${order.name}
-
-<br>
-
-<b>📧 Email:</b>
-${order.email}
-
-<br>
-
-<b>📞 Phone:</b>
-${order.phone}
-
-<br>
-
-<b>📍 Address:</b>
-${order.address}
-
-<br>
-
-<b>💰 Total:</b>
-₹${order.total}
-
-<br>
-
-<b>💳 Payment:</b>
-${order.payment}
-
-<br>
-
-<b>📦 Status:</b>
-${order.status}
-
-<br>
-
-<button onclick="updateOrderStatus('${item.id}','Preparing')">
-🍳 Preparing
-</button>
-
-<button onclick="updateOrderStatus('${item.id}','Out for Delivery')">
-🚚 Out for Delivery
-</button>
-
-<button onclick="updateOrderStatus('${item.id}','Delivered')">
-✅ Delivered
-</button>
-
-<br>
-
-<b>🕐 Date:</b>
-${order.date}
-
-</div>
-
-`;
-
-});
-
-box.innerHTML=html;
-
-}catch(error){
-
-box.innerText=
-"Orders load nahi hue: "+
-error.message;
-
-}
-
-};
-
-
-/* ================= UPDATE ORDER STATUS ================= */
-
-window.updateOrderStatus=
-async function(id,status){
-
-try{
-
-await updateDoc(
-doc(db,"orders",id),
-{
-status:status
-}
-);
-
-alert(
-"Order status updated: "+status
-);
-
-loadAdminOrders();
-
-}catch(error){
-
-alert(
-"Status update failed: "+
-error.message
-);
-
-}
-
-};
-
-
-/* ================= SEARCH ================= */
-
-document.getElementById("search")
-.addEventListener(
-"input",
-function(){
-
-const text=
-this.value.toLowerCase();
-
-document
-.querySelectorAll(".shop")
-.forEach(function(shop){
-
-shop.style.display=
-shop.innerText
-.toLowerCase()
-.includes(text)
-?"block"
-:"none";
-
-});
-
-});
-
-
-/* ================= START ================= */
-
-showPage("home");
 
 </script>
-
 
 <script>
+if ("serviceWorker" in navigator) {
 
-if("serviceWorker" in navigator){
+  window.addEventListener("load", () => {
 
-window.addEventListener(
-"load",
-()=>{
+    navigator.serviceWorker
+      .register("./sw.js")
+      .then(() => {
+        console.log(
+          "ApnaDelivery service worker registered"
+        );
+      })
+      .catch(error => {
+        console.error(
+          "Service worker error:",
+          error
+        );
+      });
 
-navigator.serviceWorker.register("./sw.js");
-
-});
+  });
 
 }
-
 </script>
-  
+
 </body>
 </html>
+```
