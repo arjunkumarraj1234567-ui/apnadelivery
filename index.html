@@ -65,19 +65,67 @@ button.gray{background:#4b5563}
 </div>
 </div>
 
-<!-- LOGIN -->
-<div id="loginBox" class="box">
-<h2>🔐 Login / Signup</h2>
+<!-- LOGIN / SIGNUP -->
+<div id="loginBox" class="box hidden">
 
-<input id="email" class="input" type="email" placeholder="Email">
+<h2>🔐 Account</h2>
 
-<input id="password" class="input" type="password" placeholder="Password">
+<div class="auth-tabs">
+
+<button id="loginTab"
+class="auth-tab active"
+onclick="showLoginForm()">
+Login
+</button>
+
+<button id="signupTab"
+class="auth-tab"
+onclick="showSignupForm()">
+Signup
+</button>
+
+</div>
+
+<div id="loginForm">
+
+<input id="loginEmail"
+class="input"
+type="email"
+placeholder="Email">
+
+<input id="loginPassword"
+class="input"
+type="password"
+placeholder="Password">
 
 <button class="full" onclick="loginUser()">Login</button>
-   <button class="full gray" onclick="resetPassword()">Forgot Password</button>
-<button class="full secondary" onclick="signupUser()">Create Account</button>
+
+<button class="full gray" onclick="resetPassword()">
+Forgot Password
+</button>
+
+</div>
+
+<div id="signupForm" class="hidden">
+
+<input id="signupEmail"
+class="input"
+type="email"
+placeholder="Email">
+
+<input id="signupPassword"
+class="input"
+type="password"
+placeholder="Password">
+
+<button class="full secondary" onclick="signupUser()">
+Create Account
+</button>
+
+</div>
 
 <div id="authMessage" class="message"></div>
+
 </div>
 
 <!-- HOME -->
